@@ -17,6 +17,8 @@ cmake_minimum_required(VERSION 3.5)
 project(rpba)
 
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 # RPBA files
 file(GLOB rpba_sources rpba.cpp rpbacore.cpp rbacore.cpp)
 
@@ -34,8 +36,15 @@ include_directories(${Boost_INCLUDE_DIRS})
 # ------------------------------------
 # Eigen
 # ------------------------------------
-find_path(EIGEN_INCLUDE_DIR Eigen/Core Eigen/Geometry $ENV{EIGEN_ROOT}/include /usr/include /usr/local/include)
-include_directories(${EIGEN_INCLUDE_DIR})
+#find_path(EIGEN_INCLUDE_DIR Eigen/Core Eigen/Geometry $ENV{EIGEN_ROOT}/include /usr/include /usr/local/include)
+#include_directories(${EIGEN_INCLUDE_DIR})
+# Eigen
+set(MIN_EIGEN_VERSION 3.2.0)
+find_package(Eigen ${MIN_EIGEN_VERSION} REQUIRED)
+if (EIGEN_FOUND)
+	message("-- Found Eigen version ${EIGEN_VERSION}: ${EIGEN_INCLUDE_DIRS}")
+	include_directories(SYSTEM ${EIGEN_INCLUDE_DIRS})
+endif (EIGEN_FOUND)
 
 # ------------------------------------
 # METIS
